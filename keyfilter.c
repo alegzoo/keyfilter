@@ -1,5 +1,5 @@
 //xmarina00
-//25.10.23
+//27.10.23
 
 /*
 Hi,
@@ -13,7 +13,6 @@ USED LIBRARIES */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 /*________________________________________*/
 
