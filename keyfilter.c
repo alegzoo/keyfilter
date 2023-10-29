@@ -273,9 +273,6 @@ int main(int argc, char *argv[]) {
     THE FUNCTION wordCheck) AND *ptrNumCheck VARIABLE HAS VALUE OF 1, WHICH HAPPENS WHEN IT IS INCREASED BY 1 WHEN THERE IS ONLY 1
     ENABLED KEY IN THE enableOccurrence FUNCTION */
 
-    //printf("numCheck: %d\n", *ptrNumCheck);
-    //printf("ptrHasWord: %d\n", *ptrHasWord);
-
     if (((*ptrNumCheck == 1) && (*ptrHasWord == 0)) || ((*ptrNumCheck == 0) && (*ptrHasWord == 0))) {
         printf("Found: %s\n", foundWord);
 
