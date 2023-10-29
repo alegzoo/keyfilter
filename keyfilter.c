@@ -1,5 +1,4 @@
 //xmarina00
-//27.10.23
 
 /*
 Hi,
@@ -16,6 +15,27 @@ USED LIBRARIES */
 
 /*________________________________________*/
 
+
+void stripSameChars(char enableStripped[], char enable[] ,int enableStrSize) {
+
+    for (int j = 0; j < enableStrSize; j++) {
+        for (int i = 0; i < enableStrSize; i++) {
+            if ((enable[i] == enable[j]) && (i != j)) {
+                enable[i] = '.';
+            }
+        }
+    }
+
+    int j = 0;
+
+    for (int i = 0; i < enableStrSize; i++) {
+        if (enable[i] != '.') {
+            enableStripped[j] = enable[i];
+            j++;
+        }
+    }
+
+}
 
 /* FUNCTION FOR SORTING ARRAYS */
 void sortAlphabetically(char arrayToSort[], int sizeOfArray) {
@@ -143,7 +163,6 @@ int main(int argc, char *argv[]) {
 
     #define MAX_LINE_LENGTH 101
     #define ALPHABET_SIZE 26
-    #define WORD_ARRAY_SIZE 101
 
     /*________________________________________
 
@@ -151,10 +170,22 @@ int main(int argc, char *argv[]) {
     1. Read line from stdin = readLine[]
     2. Allowed keys after the programme runs = enable[]
     3. Found word when there is one enabled key = foundWord[] */
+
+
+
+    /* 
     
+    WHEN ENABLING:
+    1. FIND OCCURENCE OF THE SAME CHAR IN ENABLE
+        IF THERE IS NOT A SAME, ADD TO ENABLE ARRAY
+        ELSE FIND IT'S OCCURRENCE IN THE ENABLEOCCURRENCE ARRAY (CHAR - 65) AND RISE THE VALUE OF THAT INDEX BY ONE
+
+    */
+
     char readLine[MAX_LINE_LENGTH] = {0};
     char enable[ALPHABET_SIZE] = {0};
-    char foundWord[WORD_ARRAY_SIZE] = {0};
+    //char enableOccurrence[ALPHABET_SIZE] = {0};
+    char foundWord[MAX_LINE_LENGTH] = {0};
 
     /*________________________________________
 
@@ -166,6 +197,8 @@ int main(int argc, char *argv[]) {
 
     INITIALIZED FOR HAVING A VALUE REPRESENTING DIFFERENCE BETWEEN UPPERCASE AND LOWERCASE. USED IN THE FUNCTION: toUpperCase() */
     int diffAscii = 'a' - 'A';
+
+
 
     /*-----------------------------------------
     ------------------------------------------*/
@@ -215,22 +248,7 @@ int main(int argc, char *argv[]) {
         char enableStripped[ALPHABET_SIZE] = {0};
         int maxLineLengthEnable = strlen(enable);
 
-        for (int j = 0; j < maxLineLengthEnable; j++) {
-            for (int i = 0; i < maxLineLengthEnable; i++) {
-                if ((enable[i] == enable[j]) && (i != j)) {
-                    enable[i] = '.';
-                }
-            }
-        }
-
-        int j = 0;
-
-        for (int i = 0; i < maxLineLengthEnable; i++) {
-            if (enable[i] != '.') {
-                enableStripped[j] = enable[i];
-                j++;
-            }
-        }
+        stripSameChars(enableStripped, enable, maxLineLengthEnable);
 
         sortAlphabetically(enableStripped, strlen(enableStripped));
         
