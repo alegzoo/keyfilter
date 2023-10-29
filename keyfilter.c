@@ -223,13 +223,6 @@ int main(int argc, char *argv[]) {
     int numCheck = 0;
     int *ptrNumCheck = &numCheck;
 
-    /* ________________________________________
-
-    INITIALIZED FOR HAVING STARTING POINT OF enableOccurrence array */
-
-
-
-
     /*-----------------------------------------
     ------------------------------------------*/
 
