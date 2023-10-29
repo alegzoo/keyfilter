@@ -6,6 +6,9 @@ The programme you've just opened is emulation of the virtual keyboard in navigat
 This algorithm let's you easily display only those characters, which are present in the database (no matter the size) after providing
 wanted address */
 
+/* Compile as: $ gcc -std=c11 -Wall -Wextra -Werror keyfilter.c -o keyfilter */
+/* Run as: ./keyfilter (lettersToLookFor) <database.txt */
+
 /*________________________________________
 
 USED LIBRARIES */
