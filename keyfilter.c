@@ -17,9 +17,9 @@ USED LIBRARIES */
 
 
 /* FUNCTION FOR ASSIGNING ptrNumCheck A VALUE, WHICH DETERMINES WHAT WILL BE PRINTED AS A RESULT IN main */
-void fillingNumCheck(int ALPHABET_SIZE, int enableOccurrence[], int *ptrNumCheck) {
+void fillingNumCheck(int ASCII_SIZE, int enableOccurrence[], int *ptrNumCheck) {
 
-    for (int i = 0; i < ALPHABET_SIZE; i++) {
+    for (int i = 0; i < ASCII_SIZE; i++) {
         if (enableOccurrence[i] != 0) {
             *ptrNumCheck = *ptrNumCheck + enableOccurrence[i];
         }
@@ -58,17 +58,16 @@ void wordCheck(int readLineSize, char foundWord[], char readLine[], int *ptrHasW
 }
 
 /* FUNCTION FOR ADDING KEYS (CHARACTERS) TO THE ARRAY enable AND enableOccurrence THAT CAN BE ENABLED */
-void fillEnableKeysArray(char enable[], int userInputSize, char readLine[], int *ptrPositionEnable, int enableOccurrence[]) {
+void fillEnableKeysArray(char enable[], int userInputSize, char readLine[], int *ptrPositionEnable, int enableOccurrence[], int STARTING_POINT) {
 
     int enableLength = strlen(enable);
-    int ixOccurence = readLine[userInputSize] - 65;
+    int ixOccurence = readLine[userInputSize] - STARTING_POINT;
     int flag = 0;
 
     /* WHEN THERE IS AT LEAST 1 CHARACTER ENABLED CHECK IF THE CHARACTER THAT WILL BE STORED IN enable ARRAY ISN'T ALREADY
        PRESENT, IF THE CHARACTER IS PRESENT IN THE enable ARRAY, RAISE A FLAG VALUE BY 1 AS A SIGN THAT IT SHOULD ONLY 
        INCREASE THE VALUE IN THE enableOccurrence ARRAY, ON THE INDEX WHERE IT STORES THE NUMBER OF DUPLICTES OF THAT CHARACTER */
 
-    /* ERASED && (readLine[userInputSize] != 0) */
     if (enableLength != 0) {
         for (int i = 0; i < enableLength; i ++) {
             if ((readLine[userInputSize] == enable[i]) && (readLine[userInputSize] != '\n')) {
@@ -86,7 +85,7 @@ void fillEnableKeysArray(char enable[], int userInputSize, char readLine[], int 
             (enableOccurrence[ixOccurence])++;
         }
 
-    /* IF THE enable ARRAY HAS A LENGTH OF 1, ADD CHOSEN CHARACTER TO THE ARRAY AND ALSO STORE IT'S OCCURRENCE IN enableOccurrence ARRAY*/
+    /* IF THE enable ARRAY HAS A LENGTH OF 1, ADD CHOSEN CHARACTER TO THE ARRAY AND ALSO STORE IT'S OCCURRENCE IN enableOccurrence ARRAY */
     } else {
         enable[*ptrPositionEnable] = readLine[userInputSize];
         (*ptrPositionEnable)++;
@@ -97,7 +96,7 @@ void fillEnableKeysArray(char enable[], int userInputSize, char readLine[], int 
 }
 
 /* FUNCTION FOR COMPARING ADDRESS FROM DATABASE AND INPUT */ 
-void compareAddressAndInput(char readLine[], char *argv[], int *ptrPositionEnable, int userInputSize, char enable[], int readLineSize, char foundWord[], int enableOccurrence[], int *ptrHasWord) {
+void compareAddressAndInput(char readLine[], char *argv[], int *ptrPositionEnable, int userInputSize, char enable[], int readLineSize, char foundWord[], int enableOccurrence[], int *ptrHasWord, int STARTING_POINT) {
 
     int flag = 0;
 
@@ -114,7 +113,7 @@ void compareAddressAndInput(char readLine[], char *argv[], int *ptrPositionEnabl
     if (flag == 0) {
 
         /* CALLING FUNCTION FOR ADDING NEXT CHARACTER AS ENABLE-KEY */ 
-        fillEnableKeysArray(enable, userInputSize, readLine, ptrPositionEnable, enableOccurrence);
+        fillEnableKeysArray(enable, userInputSize, readLine, ptrPositionEnable, enableOccurrence, STARTING_POINT);
 
         /* CALLING FUNCTION FOR ASSIGNING THE CLOSEST MATCH TO THE READ LINE */
         wordCheck(readLineSize, foundWord, readLine, ptrHasWord);
@@ -183,7 +182,8 @@ int main(int argc, char *argv[]) {
     DEFINING CONSTANTS OF THE PROGRAMME */
 
     #define MAX_LINE_LENGTH 101
-    #define ALPHABET_SIZE 26
+    #define ASCII_SIZE 95
+    #define STARTING_POINT 32
 
     /*________________________________________
 
@@ -194,9 +194,9 @@ int main(int argc, char *argv[]) {
     4. Number of occurrences of characters */
 
     char readLine[MAX_LINE_LENGTH] = {0};
-    char enable[ALPHABET_SIZE] = {0};
+    char enable[ASCII_SIZE] = {0};
     char foundWord[MAX_LINE_LENGTH] = {0};
-    int enableOccurrence[ALPHABET_SIZE] = {0};
+    int enableOccurrence[ASCII_SIZE] = {0};
 
     /*________________________________________
 
@@ -223,6 +223,13 @@ int main(int argc, char *argv[]) {
     int numCheck = 0;
     int *ptrNumCheck = &numCheck;
 
+    /* ________________________________________
+
+    INITIALIZED FOR HAVING STARTING POINT OF enableOccurrence array */
+
+
+
+
     /*-----------------------------------------
     ------------------------------------------*/
 
@@ -238,47 +245,59 @@ int main(int argc, char *argv[]) {
     int userInputSize = strlen(argv[1]);
 
     /* CONVERTING EVERY CHARACTER INPUTTED BY USER TO UPPERCASE */
-    toUpperCase(argv[1], userInputSize, diffAscii);
+    
+
+    for (int i = 0; i < userInputSize; i++) {
+        if ((('a' <= argv[1][i]) && (argv[1][i] <= 'z')) || ((argv[1][i] <= 'A') && (argv[1][i] <= 'Z'))) {
+            toUpperCase(argv[1], userInputSize, diffAscii);
+        }
+    }
 
     /* WHILE LOOP FOR ITERATING OVER DATABASE PROVIDED UNTIL FGETS RUNS INTO NULL VALUE */
     while(fgets(readLine, sizeof(readLine), stdin) != NULL) {
 
         readLineSize = strlen(readLine);
 
-        if ((1 > readLineSize) || (readLineSize > 101)) {
+        if (readLineSize > 100) {
             fprintf(stderr, "The size of the input is not in range 1 - 100\n");
             exit(1);
         }
 
         /* CONVERTING READ LINE FROM DATABASE TO UPPERCASE */
-        toUpperCase(readLine, readLineSize, diffAscii);
+        for (int i = 0; i < readLineSize; i++) {
+            if ((('a' <= readLine[i]) && (readLine[i] <= 'z')) || ((readLine[i] <= 'A') && (readLine[i] <= 'Z'))) {
+                toUpperCase(readLine, readLineSize, diffAscii);
+            }
+        }
 
         /* CALLING FUNCTION TO COMPARE ADDRESS FROM THE DATABASE AND USER'S INPUT */
-        compareAddressAndInput(readLine, argv, ptrPositionEnable, userInputSize, enable, readLineSize, foundWord, enableOccurrence, ptrHasWord);
+        compareAddressAndInput(readLine, argv, ptrPositionEnable, userInputSize, enable, readLineSize, foundWord, enableOccurrence, ptrHasWord, STARTING_POINT);
     }
 
-    fillingNumCheck(ALPHABET_SIZE, enableOccurrence, ptrNumCheck);
+    fillingNumCheck(ASCII_SIZE, enableOccurrence, ptrNumCheck);
 
     /* PROGRAMME PRINTS Found: "word" WHEN THERE IS A WORD ASSOCIATED WITH PROVIDED KEY (PPROVIDED MEANS WHEN *ptrHasWord HAS BEEN DECREMENTED IN
     THE FUNCTION wordCheck) AND *ptrNumCheck VARIABLE HAS VALUE OF 1, WHICH HAPPENS WHEN IT IS INCREASED BY 1 WHEN THERE IS ONLY 1
     ENABLED KEY IN THE enableOccurrence FUNCTION */
 
-    if (((*ptrNumCheck == 1) && (*ptrHasWord == 0)) || ((*ptrNumCheck == 0) && (*ptrHasWord == 0))) {
+    //printf("numCheck: %d\n", *ptrNumCheck);
+    //printf("ptrHasWord: %d\n", *ptrHasWord);
 
+    if (((*ptrNumCheck == 1) && (*ptrHasWord == 0)) || ((*ptrNumCheck == 0) && (*ptrHasWord == 0))) {
         printf("Found: %s\n", foundWord);
 
     /* PRINTING enableComplete FUNCTION WHEN *ptrNumCheck VARIABLE HAS BEEN ASSIGNED A VALUE THAT IS LARGER THAN 1, WHICH HAPPENS DURING ITERATION
        OVER enableOccurence WHEN enableOccurrence VALUES ARE SUMMED TOGETHER AND ASSIGNED TO THE *ptrNumCheck VARIABLE. (HAPPENS IN fillingNumCheck FUNCTION) */
 
-    } else if (*ptrNumCheck > 1) {
+    } else if (*ptrNumCheck >= 1) {
         
-        char enableComplete[ALPHABET_SIZE] = {0};
+        char enableComplete[ASCII_SIZE] = {0};
         int enCompMover = 0;
-        int enableSize = ALPHABET_SIZE;
+        int enableSize = ASCII_SIZE;
 
         for (int i = 0; i < enableSize; i++) {
             if (enableOccurrence[i] != 0) {
-                enableComplete[enCompMover] = i + 65;
+                enableComplete[enCompMover] = i + STARTING_POINT;
                 enCompMover++;
             }
         }
