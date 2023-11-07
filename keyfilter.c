@@ -107,10 +107,13 @@ void compareAddressAndInput(char readLine[], char *argv[], int *ptrPositionEnabl
     RAISE FLAG VALUE BY 1 AS THE SIGN THAT IT CAN'T ENABLE KEY FOR THAT PARTICULAR ADDRESS */
 
     for(int i = 0; i < userInputSize; i++) {
+
+        printf("i: %d inputSize %d strlen(readLine) %lu\n", i, userInputSize, strlen(readLine));
         if (readLine[i] != argv[1][i]) {
             flag++;
             break;
         }
+
     }
 
     if (flag == 0) {
@@ -122,6 +125,7 @@ void compareAddressAndInput(char readLine[], char *argv[], int *ptrPositionEnabl
         wordCheck(readLineSize, foundWord, readLine, ptrHasWord);
         
     }
+
 }
 
 /* emptyInput FUNCTION IS CALLED WHEN THERE IS NO INPUT BY THE USER, JUST DATABASE
@@ -184,7 +188,7 @@ int main(int argc, char *argv[]) {
 
     DEFINING CONSTANTS OF THE PROGRAMME */
 
-    #define MAX_LINE_LENGTH 101
+    #define MAX_LINE_LENGTH 120
     #define ASCII_SIZE 95
     #define STARTING_POINT 32
 
@@ -254,9 +258,9 @@ int main(int argc, char *argv[]) {
 
         readLineSize = strlen(readLine);
 
-        if (readLineSize > 100) {
+        if (readLineSize > MAX_LINE_LENGTH) {
             fprintf(stderr, "The size of the input is not in range 1 - 100\n");
-            exit(1);
+            return 1;
         }
 
         /* CONVERTING READ LINE FROM DATABASE TO UPPERCASE */
