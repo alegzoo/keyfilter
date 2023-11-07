@@ -107,9 +107,7 @@ void compareAddressAndInput(char readLine[], char *argv[], int *ptrPositionEnabl
     RAISE FLAG VALUE BY 1 AS THE SIGN THAT IT CAN'T ENABLE KEY FOR THAT PARTICULAR ADDRESS */
 
     for(int i = 0; i < userInputSize; i++) {
-
-        printf("i: %d inputSize %d strlen(readLine) %lu\n", i, userInputSize, strlen(readLine));
-        
+                
         if (readLine[i] != argv[1][i]) {
             flag++;
             break;
