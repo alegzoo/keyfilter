@@ -109,6 +109,7 @@ void compareAddressAndInput(char readLine[], char *argv[], int *ptrPositionEnabl
     for(int i = 0; i < userInputSize; i++) {
 
         printf("i: %d inputSize %d strlen(readLine) %lu\n", i, userInputSize, strlen(readLine));
+        
         if (readLine[i] != argv[1][i]) {
             flag++;
             break;
@@ -188,7 +189,7 @@ int main(int argc, char *argv[]) {
 
     DEFINING CONSTANTS OF THE PROGRAMME */
 
-    #define MAX_LINE_LENGTH 120
+    #define MAX_LINE_LENGTH 102
     #define ASCII_SIZE 95
     #define STARTING_POINT 32
 
